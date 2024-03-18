@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#080808</color>
+    <color name="white">#FAFAFA</color>
+    
+    <color name="primaryLightPurple">#51018E</color>
+    <color name="secondaryLightBlue">#2D78C8</color>
+    <color name="highlightLightOrange">#E84002</color>
+    
+    <color name="primaryDarkPurple">#C171FE</color>
+    <color name="secondaryDarkBlue">#3782D2</color>
+    <color name="highlightDarkOrange">#FD5417</color>
+    
+    <color name="backgroundLight">#F7F0FF</color>
+    <color name="backgroundDark">#07000F</color>
+    
+</resources>

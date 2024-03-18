@@ -1,0 +1,15 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.CycleFlow" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/primaryDarkPurple</item>
+        <item name="colorSecondary">@color/secondaryDarkBlue</item>
+        <item name="android:colorAccent">@color/highlightDarkOrange</item>
+        <item name="android:colorBackground">@color/backgroundDark</item>
+        
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/backgroundDark</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+    <style name="Theme.CycleFlow" parent="Base.Theme.CycleFlow" />
+
+</resources>

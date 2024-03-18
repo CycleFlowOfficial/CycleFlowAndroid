@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlinx.kover")
 }
 
 android {
@@ -19,7 +22,7 @@ android {
     
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -27,22 +30,80 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+    
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        animationsDisabled = true
     }
 }
 
 dependencies {
+    implementation(project(":ui"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
     
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    
+    // region Hilt x Worker https://developer.android.com/training/dependency-injection/hilt-jetpack#workmanager
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
+}
+
+dependencies {
+    kover(project(":data"))
+    kover(project(":domain"))
+    kover(project(":ui"))
+}
+
+koverReport {
+    filters {
+        excludes {
+            annotatedBy(
+                "dagger.Module",
+                "dagger.internal.DaggerGenerated",
+                "androidx.room.Database",
+            )
+            packages(
+                "hilt_aggregated_deps.*", // Hilt: GeneratedInjectors (NOT annotated by DaggerGenerated)
+                // ViewBinding
+            )
+            classes(
+                // COMMON
+                // Hilt
+                "*_*Factory\$*",
+                "hilt_aggregated_deps.*",
+                // Gradle Generated
+                
+                
+                // DATA
+                // Room
+                "*_Impl",
+                "*_Impl\$*",
+                
+                "*AppDatabase\$*",
+                
+                
+                // UI XML
+                // Utils
+
+                // Android UI
+                "*MainApplication",
+                "*MainApplication\$*",
+                "*Fragment",
+                "*Fragment\$*",
+                "*Activity",
+                "*Activity\$*",
+                "*Adapter",
+                "*Adapter\$*",
+            )
+        }
+    }
 }
